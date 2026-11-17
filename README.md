@@ -21,18 +21,34 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 - Session and CSRF foundations
 - GitHub issue backlog
 
-## Setup
-1. Create a MySQL database and restricted database user.
-2. Copy `.env.example` to `.env`.
-3. Set database credentials and a unique random `APP_KEY` of at least 32 characters.
-4. Point the web document root to `public/`.
-5. Run from project root using PHP CLI: `php database/migrate.php`.
-6. Test `/health`.
+## Quick setup
+
+1. Create a MySQL database and a dedicated database user.
+2. Copy `.env.example` to `.env` in the private project root.
+3. Set `APP_ENV=production`, `APP_DEBUG=false`, database credentials and a unique random `APP_KEY` of at least 32 characters.
+4. Configure the domain document root to expose only the contents of `public/`.
+5. Confirm PHP 8.2+ and the required extensions are enabled: `pdo_mysql`, `mbstring`, `openssl` and `fileinfo`. Check web PHP and CLI PHP separately.
+6. From the private project root, run `php database/migrate.php` using PHP CLI.
+7. Open `https://your-domain/health`. Expect HTTP 200 and `database=connected` when database configuration is valid.
+
+Generate an APP_KEY with:
+
+```sh
+php -r "echo bin2hex(random_bytes(32)), PHP_EOL;"
+```
+
+Never commit the real `.env` file or paste secrets into GitHub issues.
 
 ## Shared hosting
-Keep `app/`, `bootstrap/`, `config/`, `database/`, `docs/`, `storage/` and `.env` outside `public_html`. Only expose files from `public/`. Never expose migration scripts, logs, secrets or backups.
 
-## Security
-M0 defines tenant ownership and database-level organisation boundaries. It does not yet implement authentication, tenant membership, authorization middleware, RBAC enforcement, rate limiting or production monitoring. Do not use real student data until these controls and privacy requirements are implemented.
+Keep `app/`, `bootstrap/`, `config/`, `database/`, `docs/`, `storage/`, `tests/` and `.env` outside the web document root. Expose only `public/`. Never expose migration scripts, logs, secrets or backups.
+
+Read [the shared-hosting deployment runbook](docs/SHARED-HOSTING-DEPLOYMENT.md) for directory layout, migration, HTTPS, permissions, backup and restore instructions.
+
+## Security and M0 limitations
+
+M0 defines tenant ownership and database-level organisation boundaries. It does not yet implement authentication, tenant membership, authorization middleware, complete RBAC enforcement, rate limiting, monitoring or automated backup/restore. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
+
+Run the [manual smoke-test checklist](tests/MANUAL-TESTS.md) in a disposable development environment. Database and hosting acceptance checks require a real MySQL/MariaDB service and target hosting account.
 
 See `docs/ENVIRONMENT.md`, `docs/DATABASE.md`, `docs/TENANCY-ACCESS-CONTROL.md`, `docs/SHARED-HOSTING-DEPLOYMENT.md` and `docs/GITHUB-ISSUES-M0.md`.
