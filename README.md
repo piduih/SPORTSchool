@@ -11,7 +11,7 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 - Bootstrap 5 (UI layer in later milestone)
 - No Composer or Node.js requirement for M0
 
-## M0
+## M0 and M1 foundation
 - Native PHP application skeleton
 - Environment configuration
 - PDO database connection with native prepared statements
@@ -19,6 +19,8 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 - Tenant and organisation schema with same-tenant relational constraints
 - Front controller and database health endpoint
 - Session and CSRF foundations
+- M1 email/password login, logout, session rotation and login throttling
+- Tenant membership schema separated from role assignments
 - GitHub issue backlog
 
 ## Quick setup
@@ -47,7 +49,9 @@ Read [the shared-hosting deployment runbook](docs/SHARED-HOSTING-DEPLOYMENT.md) 
 
 ## Security and M0 limitations
 
-M0 defines tenant ownership and database-level organisation boundaries. It does not yet implement authentication, tenant membership, authorization middleware, complete RBAC enforcement, rate limiting, monitoring or automated backup/restore. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
+M1 adds basic authentication and tenant membership records. Tenant selection, tenant-aware authorization middleware, complete RBAC enforcement, MFA, password reset, monitoring and automated backup/restore remain outstanding. Authentication is not a substitute for tenant authorization. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
+
+Read [M1 authentication notes](docs/M1-AUTHENTICATION.md) before enabling login in a live environment. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
 
 Run the [manual smoke-test checklist](tests/MANUAL-TESTS.md) in a disposable development environment. Database and hosting acceptance checks require a real MySQL/MariaDB service and target hosting account.
 
