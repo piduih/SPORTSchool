@@ -20,6 +20,17 @@ Migration files must use ordinary SQL statements. Custom `DELIMITER` directives,
 
 **MySQL DDL limitation:** statements such as `CREATE TABLE` can implicitly commit. The runner therefore does not claim an entire migration is atomic. If a migration fails after some DDL has executed, it remains unrecorded but the database might contain partial changes. Inspect and repair that database state before retrying; do not blindly rerun a partially applied DDL migration.
 
+## Tenant and organisation integrity
+
+- `tenants` define the primary data ownership boundary.
+- `organisations` belong to one tenant.
+- The composite self-reference `(tenant_id, parent_id)` prevents an organisation from having a parent in another tenant.
+- `user_roles` supports platform, tenant and organisation assignment scopes.
+- The composite foreign key `(tenant_id, organisation_id)` prevents an organisation-scoped role assignment from crossing tenant boundaries.
+- A CHECK constraint rejects organisation-scoped assignments without a tenant.
+
+These database constraints protect referential integrity. They do not verify user membership, authorize an administrator, or enforce tenant filters in application queries. Those controls must be implemented server-side in M1.
+
 ## Connection layer
 
 Use `App\\Core\\Database::connection()` to obtain the request-scoped PDO connection.
