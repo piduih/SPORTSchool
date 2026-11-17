@@ -15,7 +15,7 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 - Native PHP application skeleton
 - Environment configuration
 - PDO database connection with native prepared statements
-- SQL migration runner
+- CLI-only SQL migration runner with migration tracking
 - Front controller and database health endpoint
 - Session and CSRF foundations
 - Tenant, organisation, users, roles and permissions schema
@@ -26,7 +26,7 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 2. Copy `.env.example` to `.env`.
 3. Set database credentials and a unique random `APP_KEY` of at least 32 characters.
 4. Point the web document root to `public/`.
-5. Run from project root: `php database/migrate.php`.
+5. Run from project root using PHP CLI: `php database/migrate.php`.
 6. Test `/health`.
 
 ## Shared hosting
