@@ -18,7 +18,8 @@ final class Database
         }
 
         $host = trim((string) getenv('DB_HOST'));
-        $port = filter_var(getenv('DB_PORT') ?: '3306', FILTER_VALIDATE_INT);
+        $portValue = getenv('DB_PORT');
+        $port = filter_var(($portValue === false || $portValue === '') ? '3306' : $portValue, FILTER_VALIDATE_INT);
         $name = trim((string) getenv('DB_DATABASE'));
         $username = (string) getenv('DB_USERNAME');
         $password = (string) getenv('DB_PASSWORD');
