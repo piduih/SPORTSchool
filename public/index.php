@@ -60,11 +60,51 @@ if ($path === '/login' && $method === 'POST') {
     $email = is_string($_POST['email'] ?? null) ? $_POST['email'] : '';
     $password = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
     if (Auth::attempt($email, $password)) {
-        header('Location: /');
+        header('Location: /tenants');
         exit;
     }
     http_response_code(401);
     respondHtml('Log masuk gagal', '<p>E-mel atau kata laluan tidak sah, atau akaun tidak mempunyai akses aktif.</p><p><a href="/login">Cuba lagi</a></p>');
+}
+
+
+if ($path === '/tenants' && $method === 'GET') {
+    if (!Auth::check()) {
+        header('Location: /login');
+        exit;
+    }
+    $memberships = TenantContext::memberships();
+    if ($memberships === []) {
+        http_response_code(403);
+        respondHtml('Tiada akses tenant', '<p>Akaun ini belum mempunyai keahlian aktif dalam mana-mana tenant.</p><form method="post" action="/logout"><input type="hidden" name="_token" value="' . escape(Csrf::token()) . '"><button type="submit">Log keluar</button></form>');
+    }
+    $token = Csrf::token();
+    $body = '<p>Pilih organisasi/tenant untuk meneruskan.</p>';
+    foreach ($memberships as $membership) {
+        $body .= '<form method="post" action="/tenants/select">'
+            . '<input type="hidden" name="_token" value="' . escape($token) . '">'
+            . '<input type="hidden" name="tenant_id" value="' . (int) $membership['id'] . '">'
+            . '<button type="submit">' . escape((string) $membership['name']) . '</button></form>';
+    }
+    respondHtml('Pilih tenant SPORTSchool', $body);
+}
+
+if ($path === '/tenants/select' && $method === 'POST') {
+    if (!Auth::check()) {
+        header('Location: /login');
+        exit;
+    }
+    if (!Csrf::verify(is_string($_POST['_token'] ?? null) ? $_POST['_token'] : null)) {
+        http_response_code(419);
+        respondHtml('Permintaan tidak sah', '<p>Sila muat semula halaman dan cuba lagi.</p>');
+    }
+    $tenantId = filter_var($_POST['tenant_id'] ?? null, FILTER_VALIDATE_INT);
+    if ($tenantId === false || $tenantId === null || !TenantContext::select((int) $tenantId)) {
+        http_response_code(403);
+        respondHtml('Akses ditolak', '<p>Tenant tidak sah atau keahlian anda tidak aktif.</p><p><a href="/tenants">Kembali</a></p>');
+    }
+    header('Location: /');
+    exit;
 }
 
 if ($path === '/logout' && $method === 'POST') {
@@ -72,6 +112,7 @@ if ($path === '/logout' && $method === 'POST') {
         http_response_code(419);
         respondHtml('Permintaan tidak sah', '<p>Sila muat semula halaman dan cuba lagi.</p>');
     }
+    TenantContext::clear();
     Auth::logout();
     header('Location: /login');
     exit;
@@ -83,9 +124,16 @@ if ($path === '/' && $method === 'GET') {
         exit;
     }
     $user = Auth::user() ?? [];
+    $tenant = TenantContext::current();
+    if ($tenant === null) {
+        header('Location: /tenants');
+        exit;
+    }
     $token = Csrf::token();
     $body = '<p>Selamat datang, ' . escape((string) ($user['name'] ?? '')) . '.</p>'
-        . '<p>Identiti pengguna disahkan. Pemilihan tenant dan kebenaran modul belum tersedia.</p>'
+        . '<p>Tenant aktif: ' . escape((string) $tenant['name']) . '.</p>'
+        . '<p>Identiti dan keahlian tenant telah disahkan. Kebenaran modul masih perlu ditetapkan melalui RBAC.</p>'
+        . '<p><a href="/tenants">Tukar tenant</a></p>'
         . '<form method="post" action="/logout"><input type="hidden" name="_token" value="' . escape($token) . '"><button type="submit">Log keluar</button></form>'
         . '<p><a href="/health">Health check</a></p>';
     respondHtml('SPORTSchool', $body);
