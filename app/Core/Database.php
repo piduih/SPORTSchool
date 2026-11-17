@@ -1,35 +1,70 @@
 <?php
 declare(strict_types=1);
 
-namespace App\\Core;
+namespace App\Core;
 
 use PDO;
+use PDOException;
 use RuntimeException;
-use Throwable;
 
 final class Database
 {
+    private static ?PDO $connection = null;
+
     public static function connection(): PDO
     {
-        $host = getenv('DB_HOST') ?: '127.0.0.1';
-        $port = getenv('DB_PORT') ?: '3306';
-        $name = getenv('DB_DATABASE') ?: '';
-        $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
-
-        if ($name === '') {
-            throw new RuntimeException('DB_DATABASE is not configured.');
+        if (self::$connection instanceof PDO) {
+            return self::$connection;
         }
 
-        $dsn = "mysql:host={$host};port={$port};dbname={$name};charset={$charset}";
+        $host = trim((string) getenv('DB_HOST'));
+        $port = filter_var(getenv('DB_PORT') ?: '3306', FILTER_VALIDATE_INT);
+        $name = trim((string) getenv('DB_DATABASE'));
+        $username = (string) getenv('DB_USERNAME');
+        $password = (string) getenv('DB_PASSWORD');
+        $charset = strtolower(trim((string) (getenv('DB_CHARSET') ?: 'utf8mb4')));
+
+        if ($host === '' || preg_match('/^[a-zA-Z0-9.-]+$/', $host) !== 1) {
+            throw new RuntimeException('DB_HOST is missing or invalid.');
+        }
+        if ($port === false || $port < 1 || $port > 65535) {
+            throw new RuntimeException('DB_PORT must be between 1 and 65535.');
+        }
+        if ($name === '' || preg_match('/^[a-zA-Z0-9_]+$/', $name) !== 1) {
+            throw new RuntimeException('DB_DATABASE is missing or invalid.');
+        }
+        if ($username === '') {
+            throw new RuntimeException('DB_USERNAME is not configured.');
+        }
+        if ($charset !== 'utf8mb4') {
+            throw new RuntimeException('Only utf8mb4 is supported for database connections.');
+        }
+
+        $dsn = sprintf(
+            'mysql:host=%s;port=%d;dbname=%s;charset=%s',
+            $host,
+            $port,
+            $name,
+            $charset
+        );
 
         try {
-            return new PDO($dsn, getenv('DB_USERNAME') ?: '', getenv('DB_PASSWORD') ?: '', [
+            self::$connection = new PDO($dsn, $username, $password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::ATTR_PERSISTENT => false,
             ]);
-        } catch (Throwable $e) {
-            throw new RuntimeException('Database connection failed.', 0, $e);
+        } catch (PDOException $exception) {
+            throw new RuntimeException('Database connection failed. Check server configuration and database availability.', 0, $exception);
         }
+
+        return self::$connection;
+    }
+
+    public static function disconnect(): void
+    {
+        self::$connection = null;
     }
 }
