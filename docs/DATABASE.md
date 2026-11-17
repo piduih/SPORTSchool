@@ -2,11 +2,27 @@
 
 Engine: MySQL 8.0+ or provider-tested compatible MariaDB, InnoDB, utf8mb4.
 
-Run migrations from CLI: `php database/migrate.php`.
+Run migrations from the project root using PHP CLI:
+
+```sh
+php database/migrate.php
+```
+
+The migration runner:
+- Refuses web requests before loading application bootstrap code.
+- Reads only sorted `database/migrations/*.sql` files.
+- Creates `schema_migrations` to record successfully applied filenames and batches.
+- Skips filenames already recorded, making successful runs repeat-safe.
+- Splits statements on semicolons outside quoted strings/identifiers and SQL comments.
+- Records a migration only after all its statements execute successfully.
+
+Migration files must use ordinary SQL statements. Custom `DELIMITER` directives, stored procedures and triggers are not supported by this runner.
+
+**MySQL DDL limitation:** statements such as `CREATE TABLE` can implicitly commit. The runner therefore does not claim an entire migration is atomic. If a migration fails after some DDL has executed, it remains unrecorded but the database might contain partial changes. Inspect and repair that database state before retrying; do not blindly rerun a partially applied DDL migration.
 
 ## Connection layer
 
-Use `App\Core\Database::connection()` to obtain the request-scoped PDO connection.
+Use `App\\Core\\Database::connection()` to obtain the request-scoped PDO connection.
 
 - PDO exceptions are enabled.
 - Native prepared statements are enabled with `PDO::ATTR_EMULATE_PREPARES=false`.
