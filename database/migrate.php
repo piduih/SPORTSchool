@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use App\\Core\\Database;
+
 // Reject web requests before loading application configuration or database code.
 if (PHP_SAPI !== 'cli') {
     http_response_code(403);
@@ -57,7 +59,7 @@ function splitMigrationSql(string $sql): array
             $buffer .= $char;
             $closing = $state === 'single' ? "'" : ($state === 'double' ? '"' : '`');
 
-            if ($char === '\\\\' && $state !== 'backtick' && $i + 1 < $length) {
+            if ($char === chr(92) && $state !== 'backtick' && $i + 1 < $length) {
                 $buffer .= $sql[++$i];
                 continue;
             }
