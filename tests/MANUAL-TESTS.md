@@ -29,6 +29,12 @@
 - [ ] Git status does not show .env, logs or uploaded files.
 - [ ] HTTPS session cookies are Secure, HttpOnly and SameSite=Lax.
 
+## Tenant schema boundaries
+- [ ] An organisation cannot reference a parent organisation in another tenant.
+- [ ] An organisation-scoped user role cannot reference an organisation in another tenant.
+- [ ] An organisation-scoped user role cannot omit tenant_id.
+- [ ] Platform, tenant and organisation role-scope semantics match docs/TENANCY-ACCESS-CONTROL.md.
+
 ## Deployment acceptance
 - [ ] Verify migration behavior against a real MySQL/MariaDB database on the target host.
 - [ ] Verify PHP CLI and pdo_mysql are available in the hosting account.
