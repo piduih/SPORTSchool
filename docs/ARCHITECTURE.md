@@ -46,5 +46,9 @@ For every tenant-owned read or write:
 
 Repositories/services introduced in M1 must require an explicit trusted tenant context; controllers must not pass raw request tenant IDs directly into unrestricted queries.
 
-## M0 limitations
+## M1 authentication boundary
+
+The M1 authentication slice verifies active user credentials and requires either an active tenant membership or an explicit platform-level super-admin assignment. Successful authentication stores the user identity in a regenerated server-side session. It does not establish an active tenant context. Tenant selection, tenant-aware authorization middleware and complete RBAC enforcement remain mandatory before tenant data routes are added.
+
+## M0 and M1 limitations
 M0 defines ownership boundaries and database relationships. It does not yet implement authentication, tenant membership tables, authorization middleware, repository guards or complete RBAC enforcement. Those are required before real multi-tenant data is used. Cross-tenant isolation tests are specified for M1.
