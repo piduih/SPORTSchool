@@ -177,7 +177,7 @@ final class UserManagement
             $query = $pdo->prepare(
                 "SELECT ur.user_id, r.role_key, ur.organisation_id
                  FROM user_roles ur INNER JOIN roles r ON r.id = ur.role_id
-                 WHERE ur.id = :id AND ur.tenant_id = :tenant_id
+                 WHERE ur.id = ? AND ur.tenant_id = ?
                    AND r.role_key IN (" . implode(',', array_fill(0, count(self::ASSIGNABLE_ROLES), '?')) . ")
                  FOR UPDATE"
             );
