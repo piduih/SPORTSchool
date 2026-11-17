@@ -51,7 +51,7 @@ Read [the shared-hosting deployment runbook](docs/SHARED-HOSTING-DEPLOYMENT.md) 
 
 ## Security and M0 limitations
 
-M1 adds basic authentication and tenant membership records. Tenant selection, tenant-aware authorization middleware, complete RBAC enforcement, MFA, password reset, monitoring and automated backup/restore remain outstanding. Authentication is not a substitute for tenant authorization. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
+M1 adds basic authentication and tenant membership records. Centralized route middleware, complete RBAC administration/enforcement, MFA, password reset, monitoring and automated backup/restore remain outstanding. Tenant selection and permission-check foundations are included, but every data route still needs explicit authorization and tenant-scoped SQL. Authentication is not a substitute for tenant authorization. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
 
 Read [M1 authentication notes](docs/M1-AUTHENTICATION.md) and [tenant context notes](docs/M1-TENANT-CONTEXT.md) before enabling login in a live environment. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
 
