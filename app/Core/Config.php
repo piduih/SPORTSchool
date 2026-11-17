@@ -9,7 +9,7 @@ final class Config
     {
         $items = require $basePath . '/config/app.php';
         if (($items['env'] ?? 'production') === 'production') {
-            if (strlen((string) ($items['key'] ?? '')) < 32) {
+            if (strlen((string) ($items['key'] ?? '')) < 32 || str_starts_with((string) $items['key'], 'GENERATE_') || str_starts_with((string) $items['key'], 'REPLACE_')) {
                 throw new RuntimeException('APP_KEY must contain at least 32 characters in production.');
             }
             if (($items['debug'] ?? false) === true) {
