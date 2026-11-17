@@ -97,3 +97,25 @@ M1 runtime and MySQL acceptance checks remain pending until executed against a r
 - [ ] Platform-level role does not silently bypass tenant permission checks.
 
 Automated integration tests against two real tenants are still required. Do not treat the presence of helper classes as proof that every future route or repository is protected.
+
+
+## 9. M1.3 tenant user and role management (disposable database only)
+
+- [ ] A user without authentication cannot open /admin/users or submit its POST endpoints.
+- [ ] An authenticated user without user.manage receives HTTP 403 for membership administration.
+- [ ] An authenticated user without role.manage cannot assign roles.
+- [ ] A tenant administrator sees only memberships for the selected tenant.
+- [ ] Activating a membership for an existing account creates or reactivates only that tenant membership.
+- [ ] An unknown email does not create a new account or membership.
+- [ ] Membership status changes accept only active, suspended or removed.
+- [ ] Suspending/removing a membership does not disable the global user account or alter another tenant membership.
+- [ ] A role cannot be assigned unless the target user has active membership in the selected tenant.
+- [ ] Platform super admin, tenant admin and organisation admin cannot be assigned through this tenant interface.
+- [ ] An organisation role assignment rejects an organisation from another tenant or an inactive organisation.
+- [ ] Duplicate role assignment in the same scope is rejected.
+- [ ] Membership and role changes create audit_logs records with tenant and actor context.
+- [ ] CSRF failures return HTTP 419 and make no database changes.
+- [ ] A database failure rolls back both the access change and its audit event.
+- [ ] Test using two tenants and confirm no cross-tenant membership or role changes are possible.
+
+Account creation, email invitation, password setup, role-permission editing and full role-revocation UI are not included in this slice. MySQL/MariaDB integration and target-hosting acceptance remain pending.
