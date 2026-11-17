@@ -216,6 +216,7 @@ if ($path === '/' && $method === 'GET') {
     $body = '<p>Selamat datang, ' . escape((string) ($user['name'] ?? '')) . '.</p>'
         . '<p>Tenant aktif: ' . escape((string) $tenant['name']) . '.</p>'
         . '<p>Identiti dan keahlian tenant telah disahkan. Kebenaran modul masih perlu ditetapkan melalui RBAC.</p>'
+        . (Authorization::allows('user.manage') ? '<p><a href="/admin/users">Pengurusan pengguna</a></p>' : '')
         . '<p><a href="/tenants">Tukar tenant</a></p>'
         . '<form method="post" action="/logout"><input type="hidden" name="_token" value="' . escape($token) . '"><button type="submit">Log keluar</button></form>'
         . '<p><a href="/health">Health check</a></p>';
