@@ -21,7 +21,7 @@ The `user_roles` table supports three intended shapes:
 
 The schema rejects an organisation assignment without a tenant and uses a composite foreign key to prevent assigning an organisation from a different tenant. The `organisations` parent relationship also uses a composite foreign key, preventing cross-tenant parent-child links.
 
-The schema does not establish user membership by itself. Before inserting or using a role assignment, application authorization code must verify the user's membership in the tenant and, for organisation scope, the user's allowed organisation scope. M0 does not yet include a tenant membership table or authorization middleware.
+The M1 schema adds `tenant_memberships`. `TenantContext` validates the signed-in user's active membership and the tenant's active status when listing, selecting and resolving a tenant. `Authorization` checks role-to-permission mappings within the validated tenant and optional exact organisation scope. These helpers are foundations; every tenant-owned SQL query must still include the trusted tenant ID returned by `TenantContext::current()`.
 
 ## Privilege boundaries
 
@@ -44,6 +44,8 @@ LIMIT 1
 ```
 
 For organisation-scoped writes, validate ownership in the same tenant context before writing. Avoid fetching by resource ID alone and checking ownership later.
+
+See `docs/M1-TENANT-CONTEXT.md` for the implemented selection and permission-check contract.
 
 ## M1 cross-tenant isolation test plan
 
