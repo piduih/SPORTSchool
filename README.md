@@ -35,4 +35,4 @@ Keep `app/`, `bootstrap/`, `config/`, `database/`, `docs/`, `storage/` and `.env
 ## Security
 M0 is a foundation, not a complete production application. Authentication, RBAC enforcement, tenant isolation middleware, rate limiting and production monitoring are subsequent work. Do not use real student data until security controls and privacy requirements are implemented.
 
-See `docs/SHARED-HOSTING-DEPLOYMENT.md` and `docs/GITHUB-ISSUES-M0.md`.
+See `docs/ENVIRONMENT.md`, `docs/SHARED-HOSTING-DEPLOYMENT.md` and `docs/GITHUB-ISSUES-M0.md`.
