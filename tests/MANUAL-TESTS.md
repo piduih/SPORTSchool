@@ -18,8 +18,17 @@
 - [ ] Database::disconnect() clears the cached connection.
 
 ## Migration and deployment
-- [ ] Migration runner cannot be invoked over HTTP.
-- [ ] CLI migration creates foundation tables.
-- [ ] Second migration run skips the applied migration.
+- [ ] Migration runner rejects an HTTP request before loading application bootstrap code.
+- [ ] CLI migration creates the schema_migrations tracking table and M0 foundation tables.
+- [ ] Successful migration is recorded with its filename and batch.
+- [ ] Second migration run skips the already-recorded migration.
+- [ ] SQL semicolons inside quoted strings do not split a statement.
+- [ ] SQL line and block comments are ignored by the statement splitter.
+- [ ] A failed migration is not inserted into schema_migrations.
+- [ ] If DDL partially executes before failure, database state is inspected and repaired before retrying.
 - [ ] Git status does not show .env, logs or uploaded files.
 - [ ] HTTPS session cookies are Secure, HttpOnly and SameSite=Lax.
+
+## Deployment acceptance
+- [ ] Verify migration behavior against a real MySQL/MariaDB database on the target host.
+- [ ] Verify PHP CLI and pdo_mysql are available in the hosting account.
