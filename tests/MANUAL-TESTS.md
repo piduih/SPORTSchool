@@ -15,7 +15,7 @@ Run these checks in a disposable development environment first. Do not use real 
 
 ## 2. Front controller and health endpoint
 
-- [ ] GET / returns the SPORTSchool starter page.
+- [ ] GET / redirects unauthenticated visitors to /login and shows the authenticated home page after sign-in.
 - [ ] GET /health with valid database credentials returns HTTP 200 and database=connected.
 - [ ] GET /health during a controlled database outage returns HTTP 503 with a generic response.
 - [ ] Health responses do not disclose credentials, DSN values, SQL statements or stack traces.
