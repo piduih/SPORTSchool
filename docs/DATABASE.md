@@ -6,7 +6,7 @@ Run migrations from CLI: `php database/migrate.php`.
 
 ## Connection layer
 
-Use `App\\Core\\Database::connection()` to obtain the request-scoped PDO connection.
+Use `App\Core\Database::connection()` to obtain the request-scoped PDO connection.
 
 - PDO exceptions are enabled.
 - Native prepared statements are enabled with `PDO::ATTR_EMULATE_PREPARES=false`.
