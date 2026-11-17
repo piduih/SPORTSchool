@@ -81,3 +81,19 @@ Tests requiring a real MySQL/MariaDB service or the target hosting account remai
 - [ ] Confirm session cookie Secure flag over HTTPS on the target host.
 
 M1 runtime and MySQL acceptance checks remain pending until executed against a real test database and target hosting environment.
+
+
+## 8. M1 tenant context and permissions (disposable database only)
+
+- [ ] Unauthenticated GET /tenants redirects to /login.
+- [ ] Authenticated user sees only active tenants with active membership rows.
+- [ ] Selecting a tenant with active membership stores the validated tenant ID in the server-side session.
+- [ ] Submitting a tenant ID without membership returns HTTP 403 and does not change the active tenant.
+- [ ] Suspended tenant or revoked membership invalidates the selected context on the next resolution.
+- [ ] A tenant-level role permission applies only within its assigned tenant.
+- [ ] An organisation-level role permission applies only to the exact assigned organisation; sibling organisation is denied.
+- [ ] Missing tenant context or missing permission is denied by Authorization::allows().
+- [ ] Tenant-owned SQL uses both the trusted tenant ID and resource ID in its predicates.
+- [ ] Platform-level role does not silently bypass tenant permission checks.
+
+Automated integration tests against two real tenants are still required. Do not treat the presence of helper classes as proof that every future route or repository is protected.
