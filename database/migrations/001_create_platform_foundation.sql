@@ -23,10 +23,11 @@ CREATE TABLE organisations (
     created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE KEY uq_org_tenant_code (tenant_id, code),
-    KEY idx_org_parent (parent_id),
+    UNIQUE KEY uq_org_tenant_id (tenant_id, id),
+    KEY idx_org_parent (tenant_id, parent_id),
     KEY idx_org_tenant_type (tenant_id, organisation_type),
     CONSTRAINT fk_org_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id),
-    CONSTRAINT fk_org_parent FOREIGN KEY (parent_id) REFERENCES organisations(id),
+    CONSTRAINT fk_org_parent_same_tenant FOREIGN KEY (tenant_id, parent_id) REFERENCES organisations(tenant_id, id),
     CONSTRAINT chk_org_type CHECK (organisation_type IN ('national', 'state', 'district', 'school', 'club', 'other'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -78,7 +79,8 @@ CREATE TABLE user_roles (
     UNIQUE KEY uq_user_role_scope (tenant_id, organisation_id, user_id, role_id),
     KEY idx_user_roles_user (user_id),
     CONSTRAINT fk_user_roles_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id),
-    CONSTRAINT fk_user_roles_org FOREIGN KEY (organisation_id) REFERENCES organisations(id),
+    CONSTRAINT fk_user_roles_org_same_tenant FOREIGN KEY (tenant_id, organisation_id) REFERENCES organisations(tenant_id, id),
+    CONSTRAINT chk_user_roles_org_requires_tenant CHECK (organisation_id IS NULL OR tenant_id IS NOT NULL),
     CONSTRAINT fk_user_roles_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_user_roles_role FOREIGN KEY (role_id) REFERENCES roles(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
