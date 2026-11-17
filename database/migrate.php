@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
+use App\Core\Database;
 
-use App\\Core\\Database;
 
 // Reject web requests before loading application configuration or database code.
 if (PHP_SAPI !== 'cli') {
@@ -12,7 +12,6 @@ if (PHP_SAPI !== 'cli') {
 $basePath = dirname(__DIR__);
 require $basePath . '/bootstrap/app.php';
 
-use App\Core\Database;
 
 /**
  * Split a MySQL migration into statements.
