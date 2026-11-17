@@ -53,7 +53,7 @@ if ($path === '/login' && $method === 'GET') {
 }
 
 if ($path === '/login' && $method === 'POST') {
-    if (!Csrf::verify($_POST['_token'] ?? null)) {
+    if (!Csrf::verify(is_string($_POST['_token'] ?? null) ? $_POST['_token'] : null)) {
         http_response_code(419);
         respondHtml('Permintaan tidak sah', '<p>Sila muat semula halaman dan cuba lagi.</p>');
     }
@@ -68,7 +68,7 @@ if ($path === '/login' && $method === 'POST') {
 }
 
 if ($path === '/logout' && $method === 'POST') {
-    if (!Csrf::verify($_POST['_token'] ?? null)) {
+    if (!Csrf::verify(is_string($_POST['_token'] ?? null) ? $_POST['_token'] : null)) {
         http_response_code(419);
         respondHtml('Permintaan tidak sah', '<p>Sila muat semula halaman dan cuba lagi.</p>');
     }
