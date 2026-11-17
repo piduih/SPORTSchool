@@ -16,9 +16,9 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 - Environment configuration
 - PDO database connection with native prepared statements
 - CLI-only SQL migration runner with migration tracking
+- Tenant and organisation schema with same-tenant relational constraints
 - Front controller and database health endpoint
 - Session and CSRF foundations
-- Tenant, organisation, users, roles and permissions schema
 - GitHub issue backlog
 
 ## Setup
@@ -33,6 +33,6 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 Keep `app/`, `bootstrap/`, `config/`, `database/`, `docs/`, `storage/` and `.env` outside `public_html`. Only expose files from `public/`. Never expose migration scripts, logs, secrets or backups.
 
 ## Security
-M0 is a foundation, not a complete production application. Authentication, RBAC enforcement, tenant isolation middleware, rate limiting and production monitoring are subsequent work. Do not use real student data until security controls and privacy requirements are implemented.
+M0 defines tenant ownership and database-level organisation boundaries. It does not yet implement authentication, tenant membership, authorization middleware, RBAC enforcement, rate limiting or production monitoring. Do not use real student data until these controls and privacy requirements are implemented.
 
-See `docs/ENVIRONMENT.md`, `docs/DATABASE.md`, `docs/SHARED-HOSTING-DEPLOYMENT.md` and `docs/GITHUB-ISSUES-M0.md`.
+See `docs/ENVIRONMENT.md`, `docs/DATABASE.md`, `docs/TENANCY-ACCESS-CONTROL.md`, `docs/SHARED-HOSTING-DEPLOYMENT.md` and `docs/GITHUB-ISSUES-M0.md`.
