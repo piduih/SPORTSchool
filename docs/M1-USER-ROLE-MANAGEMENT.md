@@ -1,6 +1,9 @@
 # M1.3 — Tenant User & Role Assignment
 
-## Setup\nApply migration `003_seed_tenant_admin_permissions.sql` after migrations 001 and 002. It grants `user.manage` and `role.manage` to the built-in `tenant_admin` role. An initial tenant administrator assignment still requires the controlled bootstrap procedure.\n\n## Scope delivered
+## Setup
+Apply migration `003_seed_tenant_admin_permissions.sql` after migrations 001 and 002. It grants `user.manage` and `role.manage` to the built-in `tenant_admin` role. An initial tenant administrator assignment still requires the controlled bootstrap procedure.
+
+## Scope delivered
 - Tenant administrators with `user.manage` can view memberships for the selected tenant.
 - They can activate an existing SPORTSchool user account as a member of the selected tenant, or change that membership to active, suspended or removed.
 - Users with `role.manage` can assign a restricted set of operational roles: competition_manager, technical_officer, judge, team_manager and viewer.
