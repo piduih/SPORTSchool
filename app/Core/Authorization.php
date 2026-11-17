@@ -23,7 +23,7 @@ final class Authorization
                   AND p.permission_key = :permission_key
                   AND (
                       ur.organisation_id IS NULL
-                      OR (:organisation_id IS NOT NULL AND ur.organisation_id = :organisation_id)
+                      OR (:organisation_check IS NOT NULL AND ur.organisation_id = :organisation_match)
                   )
                 LIMIT 1";
         $query = Database::connection()->prepare($sql);
@@ -31,7 +31,8 @@ final class Authorization
             'user_id' => $user['id'],
             'tenant_id' => $tenant['id'],
             'permission_key' => $permissionKey,
-            'organisation_id' => $organisationId,
+            'organisation_check' => $organisationId,
+            'organisation_match' => $organisationId,
         ]);
         return (bool) $query->fetchColumn();
     }
