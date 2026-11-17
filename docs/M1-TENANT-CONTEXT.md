@@ -12,7 +12,7 @@ Authorization::allows() checks the authenticated user, the validated current ten
 
 ## Important limitations
 - This slice does not implement descendant organisation inheritance.
-- Platform-level super-admin assignments do not automatically bypass tenant permission checks.
+- Platform-level super-admin assignments do not automatically bypass tenant permission checks. A platform administrator without an active tenant membership can sign in but cannot select a tenant in this slice; a separate platform administration area is not implemented.
 - All tenant-owned controllers and repository queries must still include the validated tenant ID in SQL. A permission check alone does not filter returned rows.
 - The current UI is intentionally minimal. Bootstrap 5 integration is a later UI task.
 - Audit logging, permission administration UI and full cross-tenant integration tests remain outstanding.
