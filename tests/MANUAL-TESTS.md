@@ -64,3 +64,20 @@ Run these checks in a disposable development environment first. Do not use real 
 Record the test date, PHP web version, PHP CLI version, database product/version, hosting provider and pass/fail result. Do not include credentials, APP_KEY values, personal data or database dumps in the test report.
 
 Tests requiring a real MySQL/MariaDB service or the target hosting account remain pending until executed in that environment.
+
+
+## 7. M1 authentication (disposable database only)
+
+- [ ] Apply migration 002 after migration 001.
+- [ ] Login page renders and issues a CSRF token.
+- [ ] POST login without a valid CSRF token returns HTTP 419.
+- [ ] Active user with correct password and active tenant membership can sign in.
+- [ ] Incorrect password, pending/disabled account and user without active membership receive the same generic failure message.
+- [ ] Explicit platform-level platform_super_admin assignment permits sign-in without tenant membership.
+- [ ] Successful login rotates the session ID.
+- [ ] Five failed attempts within 15 minutes trigger throttling by email or source IP.
+- [ ] Logout requires CSRF and expires the session cookie.
+- [ ] Authenticated home page does not accept a browser-supplied tenant ID as authorization context.
+- [ ] Confirm session cookie Secure flag over HTTPS on the target host.
+
+M1 runtime and MySQL acceptance checks remain pending until executed against a real test database and target hosting environment.
