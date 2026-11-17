@@ -57,7 +57,12 @@ final class UserManagement
                 throw new RuntimeException('User account not found. Account registration and invitation are not part of this release.');
             }
 
-            if ($user['status'] !== 'active') {\n                throw new RuntimeException('Only an active user account can be added to a tenant.');\n            }\n            $userId = (int) $user['id'];\n\n            $tenantQuery = $pdo->prepare("SELECT id FROM tenants WHERE id = :tenant_id AND status = 'active' LIMIT 1");
+            if ($user['status'] !== 'active') {
+                throw new RuntimeException('Only an active user account can be added to a tenant.');
+            }
+            $userId = (int) $user['id'];
+
+            $tenantQuery = $pdo->prepare("SELECT id FROM tenants WHERE id = :tenant_id AND status = 'active' LIMIT 1");
             $tenantQuery->execute(['tenant_id' => $tenantId]);
             if (!$tenantQuery->fetchColumn()) {
                 throw new RuntimeException('Active tenant not found.');
