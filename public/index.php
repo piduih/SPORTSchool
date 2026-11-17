@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 $basePath = require dirname(__DIR__) . '/bootstrap/app.php';
 
-use App\Core\Auth;
+use App\Core\Auth;\nuse App\Core\Authorization;
 use App\Core\Csrf;
 use App\Core\Database;
-use App\Core\TenantContext;
+use App\Core\TenantContext;\nuse App\Core\UserManagement;
 
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
