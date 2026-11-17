@@ -21,6 +21,8 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 - Session and CSRF foundations
 - M1 email/password login, logout, session rotation and login throttling
 - Tenant membership schema separated from role assignments
+- Server-validated tenant selection and session context
+- Tenant-scoped permission lookup foundation
 - GitHub issue backlog
 
 ## Quick setup
@@ -51,7 +53,7 @@ Read [the shared-hosting deployment runbook](docs/SHARED-HOSTING-DEPLOYMENT.md) 
 
 M1 adds basic authentication and tenant membership records. Tenant selection, tenant-aware authorization middleware, complete RBAC enforcement, MFA, password reset, monitoring and automated backup/restore remain outstanding. Authentication is not a substitute for tenant authorization. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
 
-Read [M1 authentication notes](docs/M1-AUTHENTICATION.md) before enabling login in a live environment. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
+Read [M1 authentication notes](docs/M1-AUTHENTICATION.md) and [tenant context notes](docs/M1-TENANT-CONTEXT.md) before enabling login in a live environment. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
 
 Run the [manual smoke-test checklist](tests/MANUAL-TESTS.md) in a disposable development environment. Database and hosting acceptance checks require a real MySQL/MariaDB service and target hosting account.
 
