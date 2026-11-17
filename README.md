@@ -22,7 +22,7 @@ M0 foundation starter for native PHP + MySQL on shared hosting.
 - M1 email/password login, logout, session rotation and login throttling
 - Tenant membership schema separated from role assignments
 - Server-validated tenant selection and session context
-- Tenant-scoped permission lookup foundation
+- Tenant-scoped permission lookup foundation\n- Tenant membership administration for existing accounts\n- Restricted tenant/organisation role assignment with audit events
 - GitHub issue backlog
 
 ## Quick setup
@@ -51,10 +51,11 @@ Read [the shared-hosting deployment runbook](docs/SHARED-HOSTING-DEPLOYMENT.md) 
 
 ## Security and M0 limitations
 
-M1 adds basic authentication and tenant membership records. Centralized route middleware, complete RBAC administration/enforcement, MFA, password reset, monitoring and automated backup/restore remain outstanding. Tenant selection and permission-check foundations are included, but every data route still needs explicit authorization and tenant-scoped SQL. Authentication is not a substitute for tenant authorization. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
+M1 adds basic authentication and tenant membership records. Centralized route middleware, complete RBAC administration/enforcement, user invitations and account activation, MFA, password reset, monitoring and automated backup/restore remain outstanding. Tenant selection and permission-check foundations are included, but every data route still needs explicit authorization and tenant-scoped SQL. Authentication is not a substitute for tenant authorization. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
 
 Read [M1 authentication notes](docs/M1-AUTHENTICATION.md) and [tenant context notes](docs/M1-TENANT-CONTEXT.md) before enabling login in a live environment. Do not use real student data until these controls and privacy requirements are implemented and reviewed.
 
 Run the [manual smoke-test checklist](tests/MANUAL-TESTS.md) in a disposable development environment. Database and hosting acceptance checks require a real MySQL/MariaDB service and target hosting account.
 
 See `docs/ENVIRONMENT.md`, `docs/DATABASE.md`, `docs/TENANCY-ACCESS-CONTROL.md`, `docs/SHARED-HOSTING-DEPLOYMENT.md` and `docs/GITHUB-ISSUES-M0.md`.
+\n\nRead [M1.3 user and role management notes](docs/M1-USER-ROLE-MANAGEMENT.md) for current scope and limitations.\n
