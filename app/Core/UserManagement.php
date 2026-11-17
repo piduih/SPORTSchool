@@ -50,14 +50,14 @@ final class UserManagement
         $pdo = Database::connection();
         $pdo->beginTransaction();
         try {
-            $userQuery = $pdo->prepare('SELECT id FROM users WHERE email = :email LIMIT 1 FOR UPDATE');
+            $userQuery = $pdo->prepare('SELECT id, status FROM users WHERE email = :email LIMIT 1 FOR UPDATE');
             $userQuery->execute(['email' => $email]);
-            $userId = $userQuery->fetchColumn();
-            if (!$userId) {
+            $user = $userQuery->fetch();
+            if (!is_array($user)) {
                 throw new RuntimeException('User account not found. Account registration and invitation are not part of this release.');
             }
 
-            $tenantQuery = $pdo->prepare("SELECT id FROM tenants WHERE id = :tenant_id AND status = 'active' LIMIT 1");
+            if ($user['status'] !== 'active') {\n                throw new RuntimeException('Only an active user account can be added to a tenant.');\n            }\n            $userId = (int) $user['id'];\n\n            $tenantQuery = $pdo->prepare("SELECT id FROM tenants WHERE id = :tenant_id AND status = 'active' LIMIT 1");
             $tenantQuery->execute(['tenant_id' => $tenantId]);
             if (!$tenantQuery->fetchColumn()) {
                 throw new RuntimeException('Active tenant not found.');
